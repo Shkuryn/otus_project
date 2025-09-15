@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" xmlns:color="http://www.omg.org/spec/BPMN/non-normative/color/1.0" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="18.6.1">
+  <bpmn:process id="Process_ZavedenieDiskontnoyKarty" isExecutable="true">
+    <bpmn:laneSet>
+      <bpmn:lane id="Lane_MobileApp" name="Мобильное приложение">
+        <bpmn:flowNodeRef>Task_DobavitKartu</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>SendMessage_ToBroker</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ReceiveConfirmation_FromBroker</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Broker" name="Брокер сообщений">
+        <bpmn:flowNodeRef>ReceiveMessage_FromApp</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ReceiveConfirmation_From1C</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_1C" name="1С">
+        <bpmn:flowNodeRef>Task_SozdatDiskontnuyuKartu</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>SubProcess_PoiskVladenza</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>SendConfirmation_ToBroker</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>EndEvent_Success</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ReceiveMessage_FromBroker</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_PerecheckaDannykh</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_DannyeZapolneny</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_ZapisatOshibku</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>EndEvent_Error</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="StartEvent1" name="Начало процесса">
+      <bpmn:outgoing>SequenceFlow_StartToAddCard</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:task id="Task_DobavitKartu" name="Добавить карту в приложении">
+      <bpmn:incoming>SequenceFlow_StartToAddCard</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_AddCardToSend</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sendTask id="SendMessage_ToBroker" name="Отправить данные (телефон, ФИО) в брокер" messageRef="Message_DataRequest">
+      <bpmn:incoming>SequenceFlow_AddCardToSend</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_ToBrokerReceive</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:receiveTask id="ReceiveMessage_FromApp" name="Получить сообщение от приложения" messageRef="Message_DataRequest">
+      <bpmn:incoming>SequenceFlow_ToBrokerReceive</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_BrokerTo1C</bpmn:outgoing>
+    </bpmn:receiveTask>
+    <bpmn:receiveTask id="ReceiveMessage_FromBroker" name="Прочитать пакет сообщений из брокера" messageRef="Message_DataTo1C">
+      <bpmn:incoming>SequenceFlow_BrokerTo1C</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_ToCheckData</bpmn:outgoing>
+    </bpmn:receiveTask>
+    <bpmn:task id="Task_PerecheckaDannykh" name="Проверить заполненность данных">
+      <bpmn:incoming>SequenceFlow_ToCheckData</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_ToGateway</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:exclusiveGateway id="Gateway_DannyeZapolneny" name="Данные заполнены?">
+      <bpmn:incoming>SequenceFlow_ToGateway</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_Error</bpmn:outgoing>
+      <bpmn:outgoing>SequenceFlow_Success</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:task id="Task_ZapisatOshibku" name="Записать сообщение об ошибке в журнал регистрации">
+      <bpmn:incoming>SequenceFlow_Error</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_ToEndError</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_SozdatDiskontnuyuKartu" name="Создать новый элемент справочника &#39;Дисконтные карты&#39;">
+      <bpmn:incoming>SequenceFlow_Success</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_ToSubProcess</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:subProcess id="SubProcess_PoiskVladenza" name="Поиск владельца карты">
+      <bpmn:incoming>SequenceFlow_ToSubProcess</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_ToSendConfirmation</bpmn:outgoing>
+      <bpmn:startEvent id="StartSub" />
+      <bpmn:task id="Task_PoiskV1C" name="Поиск в справочнике &#39;Физические лица&#39; по ФИО и телефону">
+        <bpmn:incoming>SequenceFlow_SubStart</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_SubToGateway</bpmn:outgoing>
+      </bpmn:task>
+      <bpmn:exclusiveGateway id="Gateway_NaydenVladelez" name="Контрагент найден?">
+        <bpmn:incoming>SequenceFlow_SubToGateway</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_SubExist</bpmn:outgoing>
+        <bpmn:outgoing>SequenceFlow_SubNew</bpmn:outgoing>
+      </bpmn:exclusiveGateway>
+      <bpmn:task id="Task_PodstavitSuschestvuyushego" name="Подставить существующего владельца">
+        <bpmn:incoming>SequenceFlow_SubExist</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_SubToEndInternal</bpmn:outgoing>
+      </bpmn:task>
+      <bpmn:task id="Task_SozdatNovoeFizLico" name="Создать новое Физ. лицо">
+        <bpmn:incoming>SequenceFlow_SubNew</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_SubToCreateOwner</bpmn:outgoing>
+      </bpmn:task>
+      <bpmn:task id="Task_PodstavitNovogo" name="Подставить новое Физ. лицо как владельца">
+        <bpmn:incoming>SequenceFlow_SubToCreateOwner</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_SubToEndInternal</bpmn:outgoing>
+      </bpmn:task>
+      <bpmn:endEvent id="EndSub" />
+      <bpmn:sequenceFlow id="SequenceFlow_SubStart" sourceRef="StartSub" targetRef="Task_PoiskV1C" />
+      <bpmn:sequenceFlow id="SequenceFlow_SubToGateway" sourceRef="Task_PoiskV1C" targetRef="Gateway_NaydenVladelez" />
+      <bpmn:sequenceFlow id="SequenceFlow_SubExist" sourceRef="Gateway_NaydenVladelez" targetRef="Task_PodstavitSuschestvuyushego">
+        <bpmn:conditionExpression>found = true</bpmn:conditionExpression>
+      </bpmn:sequenceFlow>
+      <bpmn:sequenceFlow id="SequenceFlow_SubNew" sourceRef="Gateway_NaydenVladelez" targetRef="Task_SozdatNovoeFizLico">
+        <bpmn:conditionExpression>found = false</bpmn:conditionExpression>
+      </bpmn:sequenceFlow>
+      <bpmn:sequenceFlow id="SequenceFlow_SubToCreateOwner" sourceRef="Task_SozdatNovoeFizLico" targetRef="Task_PodstavitNovogo" />
+      <bpmn:sequenceFlow id="SequenceFlow_SubToEndInternal" sourceRef="Task_PodstavitSuschestvuyushego" targetRef="EndSub" />
+      <bpmn:sequenceFlow id="SequenceFlow_SubToEndInternal2" sourceRef="Task_PodstavitNovogo" targetRef="EndSub" />
+    </bpmn:subProcess>
+    <bpmn:sendTask id="SendConfirmation_ToBroker" name="Отправить подтверждение создания карты в брокер" messageRef="Message_Confirmation">
+      <bpmn:incoming>SequenceFlow_ToSendConfirmation</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_ToEndSuccess</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:receiveTask id="ReceiveConfirmation_From1C" name="Получить подтверждение от 1С" messageRef="Message_Confirmation">
+      <bpmn:incoming>SequenceFlow_FromSendConfirmation</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_ConfirmationToApp</bpmn:outgoing>
+    </bpmn:receiveTask>
+    <bpmn:receiveTask id="ReceiveConfirmation_FromBroker" name="Прочитать подтверждение из брокера" messageRef="Message_Confirmation">
+      <bpmn:incoming>SequenceFlow_ConfirmationToApp</bpmn:incoming>
+    </bpmn:receiveTask>
+    <bpmn:endEvent id="EndEvent_Success" name="Процесс завершен успешно">
+      <bpmn:incoming>SequenceFlow_ToEndSuccess</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:endEvent id="EndEvent_Error" name="Ошибка: данные не заполнены">
+      <bpmn:incoming>SequenceFlow_ToEndError</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_StartToAddCard" sourceRef="StartEvent1" targetRef="Task_DobavitKartu" />
+    <bpmn:sequenceFlow id="SequenceFlow_AddCardToSend" sourceRef="Task_DobavitKartu" targetRef="SendMessage_ToBroker" />
+    <bpmn:sequenceFlow id="SequenceFlow_ToBrokerReceive" sourceRef="SendMessage_ToBroker" targetRef="ReceiveMessage_FromApp" />
+    <bpmn:sequenceFlow id="SequenceFlow_BrokerTo1C" sourceRef="ReceiveMessage_FromApp" targetRef="ReceiveMessage_FromBroker" />
+    <bpmn:sequenceFlow id="SequenceFlow_ToCheckData" sourceRef="ReceiveMessage_FromBroker" targetRef="Task_PerecheckaDannykh" />
+    <bpmn:sequenceFlow id="SequenceFlow_ToGateway" sourceRef="Task_PerecheckaDannykh" targetRef="Gateway_DannyeZapolneny" />
+    <bpmn:sequenceFlow id="SequenceFlow_Error" sourceRef="Gateway_DannyeZapolneny" targetRef="Task_ZapisatOshibku">
+      <bpmn:conditionExpression>dataFilled = false</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="SequenceFlow_Success" sourceRef="Gateway_DannyeZapolneny" targetRef="Task_SozdatDiskontnuyuKartu">
+      <bpmn:conditionExpression>dataFilled = true</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="SequenceFlow_ToEndError" sourceRef="Task_ZapisatOshibku" targetRef="EndEvent_Error" />
+    <bpmn:sequenceFlow id="SequenceFlow_ToSubProcess" sourceRef="Task_SozdatDiskontnuyuKartu" targetRef="SubProcess_PoiskVladenza" />
+    <bpmn:sequenceFlow id="SequenceFlow_ToSendConfirmation" sourceRef="SubProcess_PoiskVladenza" targetRef="SendConfirmation_ToBroker" />
+    <bpmn:sequenceFlow id="SequenceFlow_ToEndSuccess" sourceRef="SendConfirmation_ToBroker" targetRef="EndEvent_Success" />
+    <bpmn:sequenceFlow id="SequenceFlow_FromSendConfirmation" sourceRef="SendConfirmation_ToBroker" targetRef="ReceiveConfirmation_From1C" />
+    <bpmn:sequenceFlow id="SequenceFlow_ConfirmationToApp" sourceRef="ReceiveConfirmation_From1C" targetRef="ReceiveConfirmation_FromBroker" />
+    <bpmn:textAnnotation id="TextAnnotation_0fyzxot" />
+  </bpmn:process>
+  <bpmn:message id="Message_DataRequest" name="Данные запроса (телефон, ФИО)" />
+  <bpmn:message id="Message_DataTo1C" name="Пакет сообщений для 1С" />
+  <bpmn:message id="Message_Confirmation" name="Подтверждение создания карты" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_ZavedenieDiskontnoyKarty">
+      <bpmndi:BPMNShape id="Lane_1C_di" bpmnElement="Lane_1C">
+        <dc:Bounds x="150" y="350" width="1500" height="450" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Broker_di" bpmnElement="Lane_Broker">
+        <dc:Bounds x="150" y="200" width="1500" height="150" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_MobileApp_di" bpmnElement="Lane_MobileApp">
+        <dc:Bounds x="150" y="50" width="1500" height="150" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent1_di" bpmnElement="StartEvent1">
+        <dc:Bounds x="180" y="100" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_DobavitKartu_di" bpmnElement="Task_DobavitKartu" bioc:stroke="#205022" bioc:fill="#c8e6c9" color:background-color="#c8e6c9" color:border-color="#205022">
+        <dc:Bounds x="260" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendMessage_ToBroker_di" bpmnElement="SendMessage_ToBroker">
+        <dc:Bounds x="400" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveMessage_FromApp_di" bpmnElement="ReceiveMessage_FromApp">
+        <dc:Bounds x="400" y="230" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveMessage_FromBroker_di" bpmnElement="ReceiveMessage_FromBroker">
+        <dc:Bounds x="540" y="500" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PerecheckaDannykh_di" bpmnElement="Task_PerecheckaDannykh">
+        <dc:Bounds x="670" y="500" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_DannyeZapolneny_di" bpmnElement="Gateway_DannyeZapolneny" isMarkerVisible="true">
+        <dc:Bounds x="835" y="515" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="763" y="526" width="62" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ZapisatOshibku_di" bpmnElement="Task_ZapisatOshibku">
+        <dc:Bounds x="930" y="600" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SozdatDiskontnuyuKartu_di" bpmnElement="Task_SozdatDiskontnuyuKartu">
+        <dc:Bounds x="900" y="380" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SubProcess_PoiskVladenza_di" bpmnElement="SubProcess_PoiskVladenza">
+        <dc:Bounds x="1050" y="360" width="300" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SendConfirmation_ToBroker_di" bpmnElement="SendConfirmation_ToBroker">
+        <dc:Bounds x="1370" y="380" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveConfirmation_From1C_di" bpmnElement="ReceiveConfirmation_From1C">
+        <dc:Bounds x="1370" y="230" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveConfirmation_FromBroker_di" bpmnElement="ReceiveConfirmation_FromBroker">
+        <dc:Bounds x="1370" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_Success_di" bpmnElement="EndEvent_Success" bioc:stroke="#5b176d" bioc:fill="#e1bee7" color:background-color="#e1bee7" color:border-color="#5b176d">
+        <dc:Bounds x="1510" y="400" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1503" y="436" width="51" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_Error_di" bpmnElement="EndEvent_Error" bioc:stroke="#5b176d" bioc:fill="#e1bee7" color:background-color="#e1bee7" color:border-color="#5b176d">
+        <dc:Bounds x="1142" y="622" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1117" y="658" width="87" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_StartToAddCard_di" bpmnElement="SequenceFlow_StartToAddCard">
+        <di:waypoint x="216" y="118" />
+        <di:waypoint x="260" y="118" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_AddCardToSend_di" bpmnElement="SequenceFlow_AddCardToSend">
+        <di:waypoint x="360" y="118" />
+        <di:waypoint x="400" y="118" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_ToBrokerReceive_di" bpmnElement="SequenceFlow_ToBrokerReceive">
+        <di:waypoint x="450" y="160" />
+        <di:waypoint x="450" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_BrokerTo1C_di" bpmnElement="SequenceFlow_BrokerTo1C">
+        <di:waypoint x="450" y="310" />
+        <di:waypoint x="590" y="310" />
+        <di:waypoint x="590" y="500" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_ToCheckData_di" bpmnElement="SequenceFlow_ToCheckData">
+        <di:waypoint x="640" y="540" />
+        <di:waypoint x="670" y="540" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_ToGateway_di" bpmnElement="SequenceFlow_ToGateway">
+        <di:waypoint x="770" y="540" />
+        <di:waypoint x="798" y="540" />
+        <di:waypoint x="798" y="535" />
+        <di:waypoint x="840" y="535" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_Error_di" bpmnElement="SequenceFlow_Error">
+        <di:waypoint x="860" y="565" />
+        <di:waypoint x="860" y="600" />
+        <di:waypoint x="940" y="600" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_Success_di" bpmnElement="SequenceFlow_Success">
+        <di:waypoint x="860" y="515" />
+        <di:waypoint x="860" y="425" />
+        <di:waypoint x="900" y="425" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_ToEndError_di" bpmnElement="SequenceFlow_ToEndError">
+        <di:waypoint x="1030" y="640" />
+        <di:waypoint x="1086" y="640" />
+        <di:waypoint x="1086" y="642" />
+        <di:waypoint x="1142" y="642" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_ToSubProcess_di" bpmnElement="SequenceFlow_ToSubProcess">
+        <di:waypoint x="1000" y="420" />
+        <di:waypoint x="1050" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_ToSendConfirmation_di" bpmnElement="SequenceFlow_ToSendConfirmation">
+        <di:waypoint x="1350" y="420" />
+        <di:waypoint x="1370" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_ToEndSuccess_di" bpmnElement="SequenceFlow_ToEndSuccess">
+        <di:waypoint x="1470" y="420" />
+        <di:waypoint x="1510" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_FromSendConfirmation_di" bpmnElement="SequenceFlow_FromSendConfirmation">
+        <di:waypoint x="1420" y="380" />
+        <di:waypoint x="1420" y="310" />
+        <di:waypoint x="1370" y="310" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_ConfirmationToApp_di" bpmnElement="SequenceFlow_ConfirmationToApp">
+        <di:waypoint x="1420" y="230" />
+        <di:waypoint x="1420" y="160" />
+        <di:waypoint x="1370" y="160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="TextAnnotation_0fyzxot_di" bpmnElement="TextAnnotation_0fyzxot">
+        <dc:Bounds x="1550" y="320" width="99.99999833419332" height="29.99454190116782" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane bpmnElement="SubProcess_PoiskVladenza">
+      <bpmndi:BPMNShape id="StartSub_di" bpmnElement="StartSub">
+        <dc:Bounds x="180" y="200" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PoiskV1C_di" bpmnElement="Task_PoiskV1C">
+        <dc:Bounds x="260" y="180" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_NaydenVladelez_di" bpmnElement="Gateway_NaydenVladelez" isMarkerVisible="true">
+        <dc:Bounds x="380" y="200" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PodstavitSuschestvuyushego_di" bpmnElement="Task_PodstavitSuschestvuyushego">
+        <dc:Bounds x="460" y="160" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SozdatNovoeFizLico_di" bpmnElement="Task_SozdatNovoeFizLico">
+        <dc:Bounds x="460" y="260" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PodstavitNovogo_di" bpmnElement="Task_PodstavitNovogo">
+        <dc:Bounds x="600" y="260" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndSub_di" bpmnElement="EndSub">
+        <dc:Bounds x="740" y="200" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_SubStart_di" bpmnElement="SequenceFlow_SubStart">
+        <di:waypoint x="216" y="218" />
+        <di:waypoint x="260" y="218" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_SubToGateway_di" bpmnElement="SequenceFlow_SubToGateway">
+        <di:waypoint x="360" y="218" />
+        <di:waypoint x="380" y="218" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_SubExist_di" bpmnElement="SequenceFlow_SubExist">
+        <di:waypoint x="405" y="200" />
+        <di:waypoint x="460" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_SubNew_di" bpmnElement="SequenceFlow_SubNew">
+        <di:waypoint x="405" y="250" />
+        <di:waypoint x="460" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_SubToCreateOwner_di" bpmnElement="SequenceFlow_SubToCreateOwner">
+        <di:waypoint x="560" y="290" />
+        <di:waypoint x="600" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_SubToEndInternal_di" bpmnElement="SequenceFlow_SubToEndInternal">
+        <di:waypoint x="560" y="200" />
+        <di:waypoint x="740" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_SubToEndInternal2_di" bpmnElement="SequenceFlow_SubToEndInternal2">
+        <di:waypoint x="700" y="290" />
+        <di:waypoint x="740" y="236" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
