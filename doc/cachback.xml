@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" xmlns:color="http://www.omg.org/spec/BPMN/non-normative/color/1.0" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="18.6.1">
+  <bpmn:collaboration id="Collaboration_1">
+    <bpmn:participant id="Participant_1" name="Начисление кэшбэка" processRef="Process_NachislenieKeshbeka" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_NachislenieKeshbeka" isExecutable="true">
+    <bpmn:laneSet id="LaneSet_1">
+      <bpmn:lane id="Lane_1C">
+        <bpmn:flowNodeRef>StartEvent_1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>EndEvent_NoCard</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_CheckDiscountCard</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_CalculateCashback</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>EndEvent_Cashback</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="StartEvent_1" name="Проведение документа &#34;Продажа&#34;">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:endEvent id="EndEvent_NoCard" name="Кэшбэк не начисляется">
+      <bpmn:incoming>Flow_CardAbsent</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:exclusiveGateway id="Gateway_CheckDiscountCard" name="Дисконтная карта заполнена?">
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_CardPresent</bpmn:outgoing>
+      <bpmn:outgoing>Flow_CardAbsent</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:task id="Task_CalculateCashback" name="Рассчитать кэшбэк по шкале и сумме покупок">
+      <bpmn:incoming>Flow_CardPresent</bpmn:incoming>
+      <bpmn:outgoing>Flow_3</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:endEvent id="EndEvent_Cashback" name="Кэшбэк начислен">
+      <bpmn:incoming>Flow_3</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="Gateway_CheckDiscountCard" />
+    <bpmn:sequenceFlow id="Flow_CardAbsent" name="Нет" sourceRef="Gateway_CheckDiscountCard" targetRef="EndEvent_NoCard" />
+    <bpmn:sequenceFlow id="Flow_CardPresent" name="Да" sourceRef="Gateway_CheckDiscountCard" targetRef="Task_CalculateCashback" />
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="Task_CalculateCashback" targetRef="EndEvent_Cashback" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1">
+      <bpmndi:BPMNShape id="Participant_1_di" bpmnElement="Participant_1" isHorizontal="true">
+        <dc:Bounds x="160" y="60" width="800" height="250" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_1C_di" bpmnElement="Lane_1C" isHorizontal="true">
+        <dc:Bounds x="160" y="60" width="800" height="250" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1" bioc:stroke="#205022" bioc:fill="#c8e6c9" color:background-color="#c8e6c9" color:border-color="#205022">
+        <dc:Bounds x="210" y="140" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="197" y="176" width="63" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_NoCard_di" bpmnElement="EndEvent_NoCard" bioc:stroke="#5b176d" bioc:fill="#e1bee7" color:background-color="#e1bee7" color:border-color="#5b176d">
+        <dc:Bounds x="390" y="230" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="376" y="266" width="64" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_CheckDiscountCard_di" bpmnElement="Gateway_CheckDiscountCard" isMarkerVisible="true">
+        <dc:Bounds x="383" y="133" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="377" y="83" width="61" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_CalculateCashback_di" bpmnElement="Task_CalculateCashback">
+        <dc:Bounds x="580" y="130" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_Cashback_di" bpmnElement="EndEvent_Cashback" bioc:stroke="#5b176d" bioc:fill="#e1bee7" color:background-color="#e1bee7" color:border-color="#5b176d">
+        <dc:Bounds x="852" y="144" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="826" y="180" width="89" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
+        <di:waypoint x="246" y="157" />
+        <di:waypoint x="320" y="157" />
+        <di:waypoint x="320" y="159" />
+        <di:waypoint x="384" y="159" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_CardPresent_di" bpmnElement="Flow_CardPresent">
+        <di:waypoint x="430" y="161" />
+        <di:waypoint x="580" y="161" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="503" y="137" width="14" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_CardAbsent_di" bpmnElement="Flow_CardAbsent">
+        <di:waypoint x="408" y="183" />
+        <di:waypoint x="408" y="230" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="413" y="198" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3">
+        <di:waypoint x="760" y="163" />
+        <di:waypoint x="852" y="163" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
