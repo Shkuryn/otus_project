@@ -196,6 +196,8 @@
 			<CommonModule>ОМ_API_ОписанияТоваров</CommonModule>
 			<CommonModule>ОМ_ПриходРасходТоваров</CommonModule>
 			<CommonModule>ОМ_СозданиеДисконтнойКарты</CommonModule>
+			<CommonModule>ОМ_НачислениеБонусов</CommonModule>
+			<Catalog>ДисконтныеКарты</Catalog>
 			<DataProcessor>ЮТHTTPServiceRequest</DataProcessor>
 			<DataProcessor>ЮТHTTPОтвет</DataProcessor>
 			<DataProcessor>ЮТHTTPСервисЗапрос</DataProcessor>
@@ -210,6 +212,7 @@
 			<DataProcessor>ЮТРедакторТестов</DataProcessor>
 			<DataProcessor>ЮТСообщениеСервисаИнтеграции</DataProcessor>
 			<DataProcessor>ЮТЮнитТесты</DataProcessor>
+			<AccumulationRegister>Бонусы</AccumulationRegister>
 		</ChildObjects>
 	</Configuration>
 </MetaDataObject>
