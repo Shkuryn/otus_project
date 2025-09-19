@@ -19,7 +19,7 @@
 			<ExtendedTooltip name="НаименованиеРасширеннаяПодсказка" id="6"/>
 		</InputField>
 		<InputField name="Реквизит1" id="7">
-			<DataPath>Объект.Реквизит1</DataPath>
+			<DataPath>Объект.Неактивна</DataPath>
 			<EditMode>EnterOnInput</EditMode>
 			<ExtendedEditMultipleValues>true</ExtendedEditMultipleValues>
 			<ContextMenu name="Реквизит1КонтекстноеМеню" id="8"/>
@@ -34,7 +34,7 @@
 	<Attributes>
 		<Attribute name="Объект" id="1">
 			<Type>
-				<v8:Type>cfg:CatalogObject.Справочник1</v8:Type>
+				<v8:Type>cfg:CatalogObject.ДисконтныеКарты</v8:Type>
 			</Type>
 			<MainAttribute>true</MainAttribute>
 			<SavedData>true</SavedData>
