@@ -2676,7 +2676,7 @@
 		</right>
 	</object>
 	<object>
-		<name>Configuration.ДемонстрационноеПриложение</name>
+		<name>Configuration.ОТУС</name>
 		<right>
 			<name>UpdateDataBaseConfiguration</name>
 			<value>true</value>
