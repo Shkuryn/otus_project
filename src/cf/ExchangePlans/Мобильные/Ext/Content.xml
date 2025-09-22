@@ -1,22 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ExchangePlanContent xmlns="http://v8.1c.ru/8.3/xcf/extrnprops" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.19">
 	<Item>
-		<Metadata>Catalog.Встречи</Metadata>
-		<AutoRecord>Allow</AutoRecord>
-	</Item>
-	<Item>
-		<Metadata>Catalog.Контрагенты</Metadata>
-		<AutoRecord>Allow</AutoRecord>
-	</Item>
-	<Item>
-		<Metadata>Catalog.Пользователи</Metadata>
-		<AutoRecord>Allow</AutoRecord>
-	</Item>
-	<Item>
-		<Metadata>Catalog.Регионы</Metadata>
-		<AutoRecord>Allow</AutoRecord>
-	</Item>
-	<Item>
 		<Metadata>InformationRegister.КурсыВалют</Metadata>
 		<AutoRecord>Allow</AutoRecord>
 	</Item>
@@ -25,27 +9,7 @@
 		<AutoRecord>Allow</AutoRecord>
 	</Item>
 	<Item>
-		<Metadata>Catalog.ХранимыеФайлы</Metadata>
-		<AutoRecord>Allow</AutoRecord>
-	</Item>
-	<Item>
-		<Metadata>Catalog.Товары</Metadata>
-		<AutoRecord>Allow</AutoRecord>
-	</Item>
-	<Item>
-		<Metadata>Catalog.Склады</Metadata>
-		<AutoRecord>Allow</AutoRecord>
-	</Item>
-	<Item>
 		<Metadata>Constant.УчетПоСкладам</Metadata>
-		<AutoRecord>Allow</AutoRecord>
-	</Item>
-	<Item>
-		<Metadata>Catalog.Организации</Metadata>
-		<AutoRecord>Allow</AutoRecord>
-	</Item>
-	<Item>
-		<Metadata>Catalog.ВидыЦен</Metadata>
 		<AutoRecord>Allow</AutoRecord>
 	</Item>
 	<Item>
@@ -57,7 +21,7 @@
 		<AutoRecord>Allow</AutoRecord>
 	</Item>
 	<Item>
-		<Metadata>Catalog.Валюты</Metadata>
+		<Metadata>Catalog.ДисконтныеКарты</Metadata>
 		<AutoRecord>Allow</AutoRecord>
 	</Item>
 </ExchangePlanContent>

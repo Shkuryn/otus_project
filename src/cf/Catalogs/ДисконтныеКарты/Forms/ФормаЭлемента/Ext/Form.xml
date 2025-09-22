@@ -3,6 +3,11 @@
 	<WindowOpeningMode>LockOwnerWindow</WindowOpeningMode>
 	<UseForFoldersAndItems>Items</UseForFoldersAndItems>
 	<AutoCommandBar name="ФормаКоманднаяПанель" id="-1"/>
+	<Events>
+		<Event name="BeforeWrite">ПередЗаписью</Event>
+		<Event name="BeforeWriteAtServer">ПередЗаписьюНаСервере</Event>
+		<Event name="OnWriteAtServer">ПриЗаписиНаСервере</Event>
+	</Events>
 	<ChildItems>
 		<InputField name="Код" id="1">
 			<DataPath>Объект.Code</DataPath>
@@ -11,6 +16,15 @@
 			<ContextMenu name="КодКонтекстноеМеню" id="2"/>
 			<ExtendedTooltip name="КодРасширеннаяПодсказка" id="3"/>
 		</InputField>
+		<InputField name="Владелец" id="12">
+			<DataPath>Объект.Owner</DataPath>
+			<ExtendedEditMultipleValues>true</ExtendedEditMultipleValues>
+			<ContextMenu name="ВладелецКонтекстноеМеню" id="13"/>
+			<ExtendedTooltip name="ВладелецРасширеннаяПодсказка" id="14"/>
+			<Events>
+				<Event name="OnChange">ВладелецПриИзменении</Event>
+			</Events>
+		</InputField>
 		<InputField name="Наименование" id="4">
 			<DataPath>Объект.Description</DataPath>
 			<EditMode>EnterOnInput</EditMode>
@@ -18,13 +32,13 @@
 			<ContextMenu name="НаименованиеКонтекстноеМеню" id="5"/>
 			<ExtendedTooltip name="НаименованиеРасширеннаяПодсказка" id="6"/>
 		</InputField>
-		<InputField name="Реквизит1" id="7">
+		<CheckBoxField name="Неактивна" id="7">
 			<DataPath>Объект.Неактивна</DataPath>
 			<EditMode>EnterOnInput</EditMode>
-			<ExtendedEditMultipleValues>true</ExtendedEditMultipleValues>
-			<ContextMenu name="Реквизит1КонтекстноеМеню" id="8"/>
-			<ExtendedTooltip name="Реквизит1РасширеннаяПодсказка" id="9"/>
-		</InputField>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="НеактивнаКонтекстноеМеню" id="8"/>
+			<ExtendedTooltip name="НеактивнаРасширеннаяПодсказка" id="9"/>
+		</CheckBoxField>
 		<Button name="Кнопка1" id="10">
 			<Type>UsualButton</Type>
 			<CommandName>0</CommandName>

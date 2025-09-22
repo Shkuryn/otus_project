@@ -649,6 +649,7 @@
 			<CommonTemplate>КомпонентаПечатиШтрихкодовLinux32</CommonTemplate>
 			<CommonTemplate>КомпонентаПечатиШтрихкодовLinux64</CommonTemplate>
 			<CommonTemplate>ПолучениеДереваОбработчиковОбновления</CommonTemplate>
+			<CommonTemplate>PinkRabbitMQ</CommonTemplate>
 			<FilterCriterion>ДокументыКонтрагента</FilterCriterion>
 			<CommonModule>ОбменМобильныеОбщее</CommonModule>
 			<CommonModule>ГлобальныйПоискСервер</CommonModule>
@@ -751,6 +752,7 @@
 			<CommonModule>ФайловаяСистемаСлужебныйКлиентСервер</CommonModule>
 			<CommonModule>ФизическиеЛицаКлиентСервер</CommonModule>
 			<CommonModule>ОбновлениеИнформационнойБазыОТУС</CommonModule>
+			<CommonModule>ОбменСКроликом</CommonModule>
 			<ExchangePlan>Мобильные</ExchangePlan>
 			<ExchangePlan>ОбновлениеИнформационнойБазы</ExchangePlan>
 			<XDTOPackage>ОбменСМобильнымУстройством</XDTOPackage>
@@ -771,6 +773,7 @@
 			<EventSubscription>ПриОтправкеДанныхПодчиненному</EventSubscription>
 			<EventSubscription>ПриПолученииДанныхОтГлавного</EventSubscription>
 			<EventSubscription>ПриПолученииДанныхОтПодчиненного</EventSubscription>
+			<EventSubscription>ЗаписьДК</EventSubscription>
 			<ScheduledJob>СлияниеИндексаППД</ScheduledJob>
 			<ScheduledJob>ОбновлениеИндексаППД</ScheduledJob>
 			<ScheduledJob>ОбновлениеИсторииДанных</ScheduledJob>
@@ -786,6 +789,7 @@
 			<ScheduledJob>ОчисткаУстаревшихДанных</ScheduledJob>
 			<ScheduledJob>УдалениеУстаревшихПараметровРаботыВерсийРасширений</ScheduledJob>
 			<ScheduledJob>ЭкспортОценкиПроизводительности</ScheduledJob>
+			<ScheduledJob>ЗагрузкаДисконтныхКарт</ScheduledJob>
 			<SettingsStorage>ХранилищеВариантовОтчетов</SettingsStorage>
 			<FunctionalOption>УчетПоСкладам</FunctionalOption>
 			<FunctionalOption>РаботаСТорговымОборудованием</FunctionalOption>

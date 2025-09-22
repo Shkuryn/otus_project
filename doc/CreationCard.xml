@@ -132,7 +132,6 @@
     <bpmn:sequenceFlow id="SequenceFlow_ToEndSuccess" sourceRef="SendConfirmation_ToBroker" targetRef="EndEvent_Success" />
     <bpmn:sequenceFlow id="SequenceFlow_FromSendConfirmation" sourceRef="SendConfirmation_ToBroker" targetRef="ReceiveConfirmation_From1C" />
     <bpmn:sequenceFlow id="SequenceFlow_ConfirmationToApp" sourceRef="ReceiveConfirmation_From1C" targetRef="ReceiveConfirmation_FromBroker" />
-    <bpmn:textAnnotation id="TextAnnotation_0fyzxot" />
   </bpmn:process>
   <bpmn:message id="Message_DataRequest" name="Данные запроса (телефон, ФИО)" />
   <bpmn:message id="Message_DataTo1C" name="Пакет сообщений для 1С" />
@@ -267,9 +266,6 @@
         <di:waypoint x="1420" y="160" />
         <di:waypoint x="1370" y="160" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="TextAnnotation_0fyzxot_di" bpmnElement="TextAnnotation_0fyzxot">
-        <dc:Bounds x="1550" y="320" width="99.99999833419332" height="29.99454190116782" />
-      </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
   <bpmndi:BPMNDiagram>
