@@ -791,6 +791,7 @@
 			<ScheduledJob>ЭкспортОценкиПроизводительности</ScheduledJob>
 			<ScheduledJob>ЗагрузкаДисконтныхКарт</ScheduledJob>
 			<ScheduledJob>ЗагрузкаЗаявокНаВывод</ScheduledJob>
+			<ScheduledJob>ВыгрузкаОстатковБонусов</ScheduledJob>
 			<SettingsStorage>ХранилищеВариантовОтчетов</SettingsStorage>
 			<FunctionalOption>УчетПоСкладам</FunctionalOption>
 			<FunctionalOption>РаботаСТорговымОборудованием</FunctionalOption>
