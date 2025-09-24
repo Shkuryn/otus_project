@@ -6,6 +6,7 @@
 		<Dimensions>
 			<Dimension ref="AccumulationRegister.Продажи.Dimension.Покупатель">true</Dimension>
 			<Dimension ref="AccumulationRegister.Продажи.Dimension.Товар">false</Dimension>
+			<Dimension ref="AccumulationRegister.Продажи.Dimension.ДисконтнаяКарта">false</Dimension>
 		</Dimensions>
 	</Aggregate>
 	<Aggregate id="db2da9ec-4c6c-4ce4-be7a-cf1da89003c2">
@@ -14,6 +15,7 @@
 		<Dimensions>
 			<Dimension ref="AccumulationRegister.Продажи.Dimension.Покупатель">false</Dimension>
 			<Dimension ref="AccumulationRegister.Продажи.Dimension.Товар">true</Dimension>
+			<Dimension ref="AccumulationRegister.Продажи.Dimension.ДисконтнаяКарта">false</Dimension>
 		</Dimensions>
 	</Aggregate>
 </AccumulationRegisterAggregates>

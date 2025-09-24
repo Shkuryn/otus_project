@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MetaDataObject xmlns="http://v8.1c.ru/8.3/MDClasses" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:cmi="http://v8.1c.ru/8.2/managed-application/cmi" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xen="http://v8.1c.ru/8.3/xcf/enums" xmlns:xpr="http://v8.1c.ru/8.3/xcf/predef" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.19">
+	<Catalog uuid="3bdb0c05-c24d-4a20-a09b-cbb1d9dfd3d6">
+		<InternalInfo>
+			<xr:GeneratedType name="CatalogObject.ДисконтныеКарты" category="Object">
+				<xr:TypeId>335929ec-9fd3-4494-84b0-29eea4221e53</xr:TypeId>
+				<xr:ValueId>043f1e68-d9d4-43b9-9116-d2e0263a08e6</xr:ValueId>
+			</xr:GeneratedType>
+			<xr:GeneratedType name="CatalogRef.ДисконтныеКарты" category="Ref">
+				<xr:TypeId>8c8b93a5-44c6-47dd-b960-51a0fc7b014c</xr:TypeId>
+				<xr:ValueId>432fcb42-3985-4f2a-a494-ca7c60da13df</xr:ValueId>
+			</xr:GeneratedType>
+			<xr:GeneratedType name="CatalogSelection.ДисконтныеКарты" category="Selection">
+				<xr:TypeId>2bf5ea16-b743-4cb9-b970-5d3aebd873bb</xr:TypeId>
+				<xr:ValueId>94698794-0981-40d6-ace0-1d2beaa26d7c</xr:ValueId>
+			</xr:GeneratedType>
+			<xr:GeneratedType name="CatalogList.ДисконтныеКарты" category="List">
+				<xr:TypeId>192149b9-4427-4e55-afd5-5718ea0b3af0</xr:TypeId>
+				<xr:ValueId>1d2afc35-8d24-4f26-9055-2735e8a2a0e9</xr:ValueId>
+			</xr:GeneratedType>
+			<xr:GeneratedType name="CatalogManager.ДисконтныеКарты" category="Manager">
+				<xr:TypeId>38cb6c69-5339-4132-8e7e-c703c7c93a9b</xr:TypeId>
+				<xr:ValueId>dc71e2b1-c9a6-44a3-9000-e1a6567af499</xr:ValueId>
+			</xr:GeneratedType>
+		</InternalInfo>
+		<Properties>
+			<ObjectBelonging>Adopted</ObjectBelonging>
+			<Name>ДисконтныеКарты</Name>
+			<Comment/>
+			<ExtendedConfigurationObject>a7519511-bc9a-450a-a9d3-c3b96477b6a4</ExtendedConfigurationObject>
+		</Properties>
+		<ChildObjects/>
+	</Catalog>
+</MetaDataObject>
