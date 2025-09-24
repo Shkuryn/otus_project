@@ -219,16 +219,16 @@
 		<ChildObjects>
 			<Attribute uuid="cab7e6bc-b97c-40a3-ac4a-bd600f3e4a18">
 				<Properties>
-					<Name>Автор</Name>
+					<Name>Выгружен</Name>
 					<Synonym>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
-							<v8:content>Автор</v8:content>
+							<v8:content>Выгружен</v8:content>
 						</v8:item>
 					</Synonym>
 					<Comment/>
 					<Type>
-						<v8:Type>cfg:CatalogRef.Пользователи</v8:Type>
+						<v8:Type>xs:boolean</v8:Type>
 					</Type>
 					<PasswordMode>false</PasswordMode>
 					<Format/>
